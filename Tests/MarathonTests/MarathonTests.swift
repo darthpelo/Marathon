@@ -51,7 +51,11 @@ class MarathonTests: XCTestCase {
         try XCTAssertTrue(run(with: ["list"]).contains("git@github.com:JohnSundell/Files.git"))
 
         // Remove the package
-        try run(with: ["remove", "files"])
+        #if os(Linux)
+            try run(with: ["remove", "Files"])
+        #else
+            try run(with: ["remove", "files"])
+        #endif
         XCTAssertEqual(packagesFolder.subfolders.count, 0)
         try XCTAssertEqual(folder.subfolder(named: "Packages").files.count, 0)
 
